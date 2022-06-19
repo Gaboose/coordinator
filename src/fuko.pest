@@ -1,0 +1,29 @@
+WHITESPACE = _{ " " }
+COMMENT    = _{ "//" ~ (!NEWLINE ~ ANY)* }
+
+date = @{ ASCII_DIGIT+ ~ "-" ~ ASCII_DIGIT+ }
+identifier = @{ ASCII_ALPHANUMERIC+ }
+number = @{ "-"? ~ int ~ ("." ~ ASCII_DIGIT+)? }
+int    = @{ "0" | ASCII_NONZERO_DIGIT ~ ASCII_DIGIT* }
+period = { "month" }
+
+periodic_currency = { "€"? ~ number ~ "/" ~ period }
+onetime_currency = { "€"? ~ number }
+currency = { periodic_currency | onetime_currency }
+
+expr = { or }
+or = { and ~ ("||" ~ and)* }
+and = { unary ~ ("&&" ~ unary)* }
+unary = { (identifier | ( "(" ~ expr ~ ")" )) ~ ( "(" ~ periodic_currency ~ ")" )? }
+
+needs = { "needs" }
+commits = { "commits" }
+ask_for_balance = { "ask" ~ "for" ~ "balance" }
+
+verb_statement = { identifier ~ (needs ~ currency ~ ("," ~ ask_for_balance)? | commits ~ periodic_currency) }
+date_verb_statement = { date ~ identifier ~ "had" ~ onetime_currency}
+flow_statement = { identifier ~ "->" ~ expr }
+
+statement = _{ verb_statement | date_verb_statement | flow_statement }
+
+file = { SOI ~ (statement? ~ NEWLINE)* ~ statement? ~ EOI }
