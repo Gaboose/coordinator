@@ -1,0 +1,37 @@
+<html>
+<style>
+body {
+    width: 100%;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.grid-container > div,p {
+    padding: 10px;
+}
+
+#input {
+    outline: 0px solid transparent;
+}
+
+#output {
+    background-color: #EEEEEE;
+    font-family: "Lucida Console", "Menlo", "Courier", monospace;
+    font-weight: bold;
+    white-space: pre-wrap;
+}
+</style>
+<body>
+<div class="grid-container">
+    <div contenteditable id="input"></div>
+    <p id="output"></p>
+</div>
+<script src="index.js"></script>
+</body>
+</html>
